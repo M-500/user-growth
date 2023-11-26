@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 	"log"
 	"time"
 	"user_growth/pb"
@@ -17,7 +18,10 @@ import (
 
 func main() {
 	add := flag.String("addr", "localhost:80", "the addr to connect to ")
-	conn, err := grpc.Dial(*add)
+	opts := []grpc.DialOption{
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+	}
+	conn, err := grpc.Dial(*add, opts...)
 	if err != nil {
 		log.Fatalf("faile to connect : %v\n", err)
 	}
