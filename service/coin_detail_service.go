@@ -36,14 +36,6 @@ func (s *CoinDetailService) FindAllPager(uid, page, size int) ([]models.TbCoinDe
 	return s.daoCoinDetailDao.FindAllPager(uid, page, size)
 }
 
-func (s *CoinDetailService) Insert(data *models.TbCoinDetail) error {
-	return s.daoCoinDetailDao.Insert(data)
-}
-
-func (s *CoinDetailService) Update(data *models.TbCoinDetail, musColumns ...string) error {
-	return s.daoCoinDetailDao.Update(data, musColumns...)
-}
-
 func (s *CoinDetailService) Save(data *models.TbCoinDetail, musColumns ...string) error {
 	return s.daoCoinDetailDao.Save(data, musColumns...)
 }

@@ -2,6 +2,9 @@ package conf
 
 import (
 	"encoding/json"
+	"fmt"
+	"github.com/spf13/viper"
+	"io/ioutil"
 	"log"
 	"os"
 )
@@ -18,22 +21,24 @@ const envConfigName = "USE_GROWTH_CONFIG"
 
 type ProjectConfig struct {
 	Db struct {
-		Engine          string // mysql
-		Username        string // root
-		Password        string // 123456
-		Host            string // 127.0.0.1
-		Port            int    // 3306
-		Database        string // user_growth
-		Charset         string // utf8mb4
-		ShowSQL         bool   // false
-		MaxIdleConns    int    // 2
-		MaxOpenConns    int    // 10
-		ConnMaxLifetime int    // 30m
-	}
+		Engine          string `json:"engine"`          // mysql
+		Username        string `json:"username"`        // root
+		Password        string `json:"password"`        // 123456
+		Host            string `json:"host"`            // 127.0.0.1
+		Port            int    `json:"port"`            // 3306
+		Database        string `json:"database"`        // user_growth
+		Charset         string `json:"charset"`         // utf8mb4
+		ShowSQL         bool   `json:"showSQL"`         // false
+		MaxIdleConns    int    `json:"maxIdleConns"`    // 2
+		MaxOpenConns    int    `json:"maxOpenConns"`    // 10
+		ConnMaxLifetime int    `json:"connMaxLifetime"` // 30m
+	} `json:"db"`
 }
 
-func LoadConfigs() {
-	LoadEnvConfig()
+func LoadConfigs(path string) {
+	//LoadEnvConfig()
+	//LoadJsonConfig()
+	LoadYmlConfig(path)
 }
 
 func LoadEnvConfig() {
@@ -44,6 +49,34 @@ func LoadEnvConfig() {
 			log.Fatalf("config.LoadEnvConfig(%s),error = %v\n", envConfigName, err)
 			return
 		}
+	} else {
+		print("参数不存在")
+	}
+	GlobalConfig = pc
+}
+
+func LoadJsonConfig() {
+	pc := &ProjectConfig{}
+	configData, err := ioutil.ReadFile("config.json")
+	if err != nil {
+		fmt.Println("Error reading config file:", err)
+		os.Exit(1)
+	}
+	if err := json.Unmarshal(configData, pc); err != nil {
+		log.Fatalf("config.LoadJsonConfig(%s),error = %v\n", envConfigName, err)
+	}
+	GlobalConfig = pc
+}
+
+func LoadYmlConfig(path string) {
+	pc := &ProjectConfig{}
+	v := viper.New()
+	v.SetConfigFile(path)
+	if err := v.ReadInConfig(); err != nil {
+		panic(err)
+	}
+	if err := v.Unmarshal(pc); err != nil {
+		panic(err)
 	}
 	GlobalConfig = pc
 }
