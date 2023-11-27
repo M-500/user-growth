@@ -18,7 +18,9 @@ type UgCoinServer struct {
 }
 
 func (u *UgCoinServer) ListTasks(ctx context.Context, in *pb.ListTasksRequest) (*pb.ListTasksReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListTasks not implemented")
+	//coinTaskSvc := service.NewCoinTaskService(ctx)
+	//coinTaskSvc.FindAllPager()
+	return nil, nil
 }
 func (u *UgCoinServer) UserCoinInfo(ctx context.Context, in *pb.UserCoinInfoRequest) (*pb.UserCoinInfoReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserCoinInfo not implemented")

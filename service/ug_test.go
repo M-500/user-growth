@@ -43,3 +43,5 @@ func TestCoinTaskService_Save(t *testing.T) {
 		log.Printf("Save data=%+v\n", data)
 	}
 }
+
+//func TestCoinTaskService_
