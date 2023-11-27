@@ -25,7 +25,7 @@ func CoinTaskToMessage(data *TbCoinTask) *pb.TbCoinTask {
 	return d
 }
 
-func MessageToCoinTask(data *pb.TbCoinTask) *TbCoinTask {
+func CoinTaskToObject(data *pb.TbCoinTask) *TbCoinTask {
 	d := &TbCoinTask{
 		Id:    uint(data.Id),
 		Task:  data.Task,
