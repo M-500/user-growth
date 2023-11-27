@@ -25,7 +25,12 @@ func main() {
 	if err != nil {
 		log.Fatalf("faile to connect : %v\n", err)
 	}
-	defer conn.Close()
+	defer func(conn *grpc.ClientConn) {
+		err = conn.Close()
+		if err != nil {
+			log.Printf("failed to release conn %v\n", err)
+		}
+	}(conn)
 	// 请求服务
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
