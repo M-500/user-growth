@@ -28,12 +28,12 @@ func (s *CoinTaskService) Get(id int) (*models.TbCoinTask, error) {
 	return s.daoCoinTaskDao.Get(id)
 }
 
-func (s *CoinTaskService) FindByUid(uid, page, size int) ([]models.TbCoinTask, int64, error) {
-	return s.daoCoinTaskDao.FindByUid(uid, page, size)
+func (s *CoinTaskService) GetByTask(task string) (*models.TbCoinTask, error) {
+	return s.daoCoinTaskDao.GetByTask(task)
 }
 
-func (s *CoinTaskService) FindAllPager(uid, page, size int) ([]models.TbCoinTask, int64, error) {
-	return s.daoCoinTaskDao.FindAllPager(uid, page, size)
+func (s *CoinTaskService) FindAll() ([]models.TbCoinTask, error) {
+	return s.daoCoinTaskDao.FindAll()
 }
 
 func (s *CoinTaskService) Save(data *models.TbCoinTask, musColumns ...string) error {

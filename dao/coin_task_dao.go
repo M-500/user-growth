@@ -38,32 +38,21 @@ func (dao *CoinTaskDao) Get(id int) (*models.TbCoinTask, error) {
 	return data, nil
 }
 
-func (dao *CoinTaskDao) FindByUid(uid, page, size int) ([]models.TbCoinTask, int64, error) {
-	dataList := make([]models.TbCoinTask, 0)
-	sess := dao.db.Where("`uid`=?", uid) // 预编译方式，避免直接拼接SQL语句造成SQL注入
-	if page < 1 {
-		page = 1
+func (dao *CoinTaskDao) GetByTask(task string) (*models.TbCoinTask, error) {
+	data := &models.TbCoinTask{}
+	if _, err := dao.db.Where("`task`=?", task).Get(data); err != nil {
+		return nil, err
+	} // 预编译方式，避免直接拼接SQL语句造成SQL注入
+	if data == nil || data.Id == 0 {
+		return nil, nil
 	}
-	if size < 1 {
-		size = 10
-	}
-	start := (page - 1) * size
-	total, err := sess.Desc("id").Limit(size, start).FindAndCount(&dataList)
-	return dataList, total, err
+	return data, nil
 }
 
-func (dao *CoinTaskDao) FindAllPager(uid, page, size int) ([]models.TbCoinTask, int64, error) {
-
-	if page < 1 {
-		page = 1
-	}
-	if size < 1 {
-		size = 10
-	}
-	start := (page - 1) * size
+func (dao *CoinTaskDao) FindAll() ([]models.TbCoinTask, error) {
 	dataList := make([]models.TbCoinTask, 0)
-	total, err := dao.db.Desc("id").Limit(size, start).FindAndCount(&dataList)
-	return dataList, total, err
+	err := dao.db.Desc("id").Find(&dataList)
+	return dataList, err
 }
 
 func (dao *CoinTaskDao) Insert(data *models.TbCoinTask) error {
