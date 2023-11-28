@@ -34,7 +34,7 @@ func (dao *GradeInfoDao) Get(id int) (*models.TbGradeInfo, error) {
 	return data, nil
 }
 
-func (dao *GradeInfoDao) FindALL() ([]models.TbGradeInfo, error) {
+func (dao *GradeInfoDao) FindAll() ([]models.TbGradeInfo, error) {
 	dataList := make([]models.TbGradeInfo, 0)
 	err := dao.db.Asc("score").Find(&dataList)
 	return dataList, err
